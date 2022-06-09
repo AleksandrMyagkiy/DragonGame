@@ -3,8 +3,9 @@ class GameScene extends Phaser.Scene {
         super("Game");
     }
 
-    preload() {
+    create() {
         this.createBackground();
+        this.player = new Player(this);
     }
 
     createBackground() {

@@ -5,7 +5,6 @@ class StartScene extends Phaser.Scene {
     create() {
         this.createBackground();
         this.creatText();
-        this.setEvents();
     }
 
     createBackground() {
@@ -13,17 +12,14 @@ class StartScene extends Phaser.Scene {
     }
 
     creatText() {
-        let tapToStart = "Tap to start";
-        this.add.text(config.width / 2, 500, tapToStart, {
+        this.tapToStart = this.add.text(config.width / 2, 500, "Tap to start", {
             font: '40px CurseCasual',
             fill: '#ffffff'
         }).setOrigin(0.5);
-    }
-
-    setEvents() { //Переход на игровое поле
-        this.input.on('pointerdown', () => {
+        this.tapToStart.setInteractive();
+        this.tapToStart.on('pointerdown', () => {
             this.scene.start('Game');
-        })
+        });
     }
 
 }
