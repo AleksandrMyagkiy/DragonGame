@@ -6,7 +6,7 @@ let config = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    scene: [StartScene]
+    scene: [BootScene, PreloadScene, StartScene, GameScene]
 };
 
 let game = new Phaser.Game(config);
