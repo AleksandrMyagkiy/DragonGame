@@ -1,13 +1,10 @@
-class Player extends Phaser.GameObjects.Sprite {
+class Player extends Enemy {  // является частью класса Enemy
     constructor(scene) {
         super(scene, 150, config.height / 2, 'dragon', 'dragon1');
-        this.init();
     }
 
-    init() {
-        this.scene.add.existing(this);          // Выводим плеера на екран
-        this.scene.physics.add.existing(this);  // запускаем движек для дракона
-        this.body.enable = true;                // обязательно проставляем самому спрайту флаг( body.enable = true )
+    init() {   
+        super.init();  // вызывает код базового класса Enemy      
         this.velocity = 500;
     }
 
@@ -25,6 +22,5 @@ class Player extends Phaser.GameObjects.Sprite {
         } else if (this.scene.cursors.down.isDown) {  // вниз
             this.body.setVelocityY(this.velocity);
         }
-
     }
 }
