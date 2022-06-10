@@ -10,12 +10,11 @@ class GameScene extends Phaser.Scene {
     create() {  // Создание предзагруженных обьектов
         this.createBackground();
         this.player = new Player(this);
-        this.enemy = new Enemy(this, config.width - 150, config.height / 2, 'enemy', 'enemy1');
+        this.enemies = new Enemies(this);
     }
 
     update() {  // вызывается для обновления постоянно без остановки но только после create()
         this.player.move();
-        this.enemy.move();
         this.bg.tilePositionX += 0.5;  // бекграунд сам себя дублирует постоянно
     }
 
