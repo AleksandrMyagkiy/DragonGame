@@ -1,11 +1,28 @@
 class Player extends Enemy {  // является частью класса Enemy
     constructor(scene) {
-        super(scene, 150, config.height / 2, 'dragon', 'dragon1');
+        super({
+            scene, 
+            x: 150, 
+            y: config.height / 2, 
+            texture: 'dragon', 
+            frame: 'dragon1',
+            velocity: 500
+        });
     }
 
-    init() {   
-        super.init();  // вызывает код базового класса Enemy      
-        this.velocity = 500;
+    init(data) {   
+        super.init(data);  // вызывает код базового класса Enemy      
+        this.fires = new Fires(this.scene);
+        this.timer = this.scene.time.addEvent({  // создаем стандартный таймер
+            delay: 500,  // каждую секунду
+            loop: true, // цикличность постоянная
+            callback: this.fire,
+            callbackScope: this
+        });
+    }
+
+    fire() {
+        this.fires.createFire(this);
     }
 
     move() {  // Метод обработк передвижения игрока
