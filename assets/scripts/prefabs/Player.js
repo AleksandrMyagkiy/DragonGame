@@ -6,23 +6,10 @@ class Player extends Enemy {  // является частью класса Enem
             y: config.height / 2, 
             texture: 'dragon', 
             frame: 'dragon1',
-            velocity: 500
+            velocity: 500,
+            bullet: {delay: 500, texture: 'fire', velocity: 750},
+            origin: {x: 1, y: 0.5} //росположение вылета огня 
         });
-    }
-
-    init(data) {   
-        super.init(data);  // вызывает код базового класса Enemy      
-        this.fires = new Fires(this.scene);
-        this.timer = this.scene.time.addEvent({  // создаем стандартный таймер
-            delay: 500,  // каждую секунду
-            loop: true, // цикличность постоянная
-            callback: this.fire,
-            callbackScope: this
-        });
-    }
-
-    fire() {
-        this.fires.createFire(this);
     }
 
     move() {  // Метод обработк передвижения игрока

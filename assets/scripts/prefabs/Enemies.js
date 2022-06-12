@@ -1,10 +1,11 @@
 class Enemies extends Phaser.Physics.Arcade.Group {
     constructor(scene) {
-        super();
+        super(scene.physics.world, scene);
         this.scene = scene;
-
+        this.fires = new Fires(this.scene);
         this.countMax = 10; // число сколько раз вызывать метод создания противников в уровне
         this.countCreated = 0;
+        this.countKilled = 0; // счетчик убитых врагов
 
         this.timer = this.scene.time.addEvent({  // создаем стандартный таймер
             delay: 1000,  // каждую секунду
@@ -22,16 +23,27 @@ class Enemies extends Phaser.Physics.Arcade.Group {
         }
     }
 
+    onEnemyKilled() {
+        // при каждом убитом увеличиваем счетчик на 1
+        ++this.countKilled;
+
+        // и когда количество убитых будет >= заданному количеству
+        if (this.countKilled >= this.countMax) {
+            // вызываем метод
+            this.scene.events.emit('enemies-killed');
+        }
+        // 
+    }
+
     createEnemy() {  
         let enemy = this.getFirstDead(); // возвращает первый деактивированный элемент в текущей группе
         
         if (!enemy) { // если такого нет
-            console.log('create new enemy');
-            enemy = Enemy.generate(this.scene); // создаем противника с генератора случайного противников
+            enemy = Enemy.generate(this.scene, this.fires); // создаем противника с генератора случайного противников
+            enemy.on('killed', this.onEnemyKilled, this);
             this.add(enemy);  // добавляем врага в группу
 
         } else { // или же просто пересоздаем
-            console.log('reset existing enemy');
             enemy.reset();
         }
 

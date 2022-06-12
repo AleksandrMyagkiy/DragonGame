@@ -41,6 +41,20 @@ class MovableObject extends Phaser.GameObjects.Sprite {
         this.setVisible(status);
         // деактивировать/активировать обьект
         this.setActive(status);
+        // если таймер запущен  
+        if (this.timer) {
+            // то при деактивации обьекта ставим на паузу
+            if (!status) {
+                this.timer.paused = true;
+            // при активации обьекта снимаем таймер с паузы
+            } else {
+                this.timer.paused = false;
+            }
+        }
+        // при деактивации обьекта запускаем событие 'killed'
+        if (!status) {
+        this.emit('killed')
+        }
     }
     
     move() {  // Метод обработк передвижения fire
