@@ -10,11 +10,23 @@ class GameScene extends Phaser.Scene {
 
     create() {  // Создание предзагруженных обьектов
         this.createBackground();
+        if (!this.sounds) {
+        this.createSounds();
+        }
         this.player = new Player(this);
         this.enemies = new Enemies(this);
         this.createCompleteEvents();
         this.addOverlap();
         this.createText();
+    }
+
+    createSounds() {
+        this.sounds = {
+            boom: this.sound.add('boom', {volume: 0.1}),
+            theme: this.sound.add('theme', {volume: 0.2, loop: true})
+        }
+
+        this.sounds.theme.play();
     }
 
     // создаем текст score
@@ -38,12 +50,17 @@ class GameScene extends Phaser.Scene {
 
     // передаем первый обьект и второй обьект (source, target) которые учавствуют в столкновении
     onOverlap(source, target) {
-        // если убитый обьект не является плеером
-        if (source !== this.player && target !== this.player) {
+        // проверяем[source, target] на сходство с врагом 'enemy' и возвращаем обьект противника enemy 
+        const enemy = [source, target].find(item => item.texture.key === 'enemy');
+
+        // если убитый обьект является врагом(enemy)
+        if (enemy) {
             // добавляем в score +1
             ++this.score;
             // и перезаписываем тест
             this.scoreText.setText(`Score: ${this.score}`);
+            Boom.generate(this, enemy.x, enemy.y); // вызываем взрыв который происходит в момент столкновения
+            this.sounds.boom.play();
         }
         source.setAlive(false); // при попадании удаляем пулю
         target.setAlive(false); // при попадании удаляем вертолет
